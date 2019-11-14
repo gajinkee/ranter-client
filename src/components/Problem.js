@@ -10,16 +10,17 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
-const styles ={
+const styles={
     card: {
+        position: 'relative',
         display: 'flex',
         marginBottom:20,
     },
-    image:{
-        minWidth: 200,
+    image:{      
+        minWidth:200,    
     },
     content:{
-        padding: 40,
+        padding: 25,
         objectFit: 'cover'
     }
 };
@@ -27,9 +28,9 @@ const styles ={
 class Problem extends Component {
     render() {
             dayjs.extend(relativeTime)
-            const {classes, problem: { body, createdAt,userImage,userHandle,screamId,likeCount, commentCount}} = this.props
+            const {classes, problem: { body, createdAt,userImage,userHandle,problemId,likeCount,commentCount}} = this.props
         return (
-            <Card className={classes.Card}>
+            <Card className={classes.card}>
                 <CardMedia image={userImage} title="Profile image" className={classes.image}/>
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component={Link} to={`/users/${userHandle}`}

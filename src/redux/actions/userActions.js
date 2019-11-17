@@ -1,7 +1,6 @@
 import {
     SET_USER,
     SET_ERRORS,
-    CLEAR_ERRORS,
     LOADING_UI,
     SET_UNAUTHENTICATED,
     LOADING_USER,
@@ -9,6 +8,7 @@ import {
   } from '../types';
 
 import axios from 'axios';
+import { clearErrors } from './dataActions';
 
 export const loginUser= (userData, history) => (dispatch) =>{
     dispatch({type: LOADING_UI});
@@ -18,7 +18,7 @@ export const loginUser= (userData, history) => (dispatch) =>{
     .then((res) =>{
         setAuthorizationHeader(res.data.token);
         dispatch(getUserData());
-        dispatch({ type: CLEAR_ERRORS });
+        dispatch(clearErrors());
         history.push('/');
     })
     .catch(err =>{
@@ -43,7 +43,7 @@ export const signupUser= (newUserData, history) => (dispatch) =>{
     .then(res =>{
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData());
-        dispatch({ type: CLEAR_ERRORS });
+        dispatch(clearErrors());
         history.push('/');
     })
     .catch(err =>{
@@ -66,6 +66,38 @@ export const getUserData= () => (dispatch) =>{
     })
     .catch((err) => console.log(err));
 };
+
+export const uploadImage = (formData) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+      .post('/user/image', formData)
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  };
+
+  export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+      .post('/user', userDetails)
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  };
+
+  export const markNotificationsRead = (notificationIds) => (dispatch) => {
+    axios
+      .post('/notifications', notificationIds)
+      .then((res) => {
+        dispatch({
+          type: MARK_NOTIFICATIONS_READ
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
 
 const setAuthorizationHeader = (token) =>{
     const FBIdToken=`Bearer ${token}` ;

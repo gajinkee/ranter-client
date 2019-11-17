@@ -1,31 +1,25 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 
-import Problem from '../components/Problem';
-import Profile from '../components/Profile';
+import Problem from '../components/problem/Problem';
+import Profile from '../components/profile/Profile';
+import ProblemSkeleton from '../util/ProblemSkeleton.js'
 
 
-export class home extends Component {
-    state={
-        problems: null
-    }
+import {connect} from 'react-redux';
+import {getProblems} from '../redux/actions/dataActions';
+
+class home extends Component {
     componentDidMount() {
-        axios.get('/problems')
-            .then(res=>{
-                this.setState({
-                    problems:res.data
-
-                })
-            })
-            .catch(err => console.log(err));
-      }
+        this.props.getProblems();
+    }
     render() {
-        let recentProblemsMarkup = this.state.problems ?(
-        this.state.problems.map(problem=> <Problem key={problem.problemId} problem={problem}/>)
-        ) : (
-        <p>Loading...</p>
-        )
+        const {problems,loading}= this.props.data;
+        let recentProblemsMarkup = !loading ?(
+        problems.map(problem=> <Problem key={problem.problemId} problem={problem}/>)
+        ) : 
+        <ProblemSkeleton/>
         return (
             <Grid container spacing = {10}>
                 <Grid item sm={8} xs={12}>
@@ -39,4 +33,13 @@ export class home extends Component {
     }
 }
 
-export default home;
+home.propTypes = {
+    getProblems: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = (state) => ({
+    data: state.data
+})
+
+export default connect(mapStateToProps,{getProblems })(home);

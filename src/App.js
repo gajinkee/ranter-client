@@ -14,16 +14,19 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 
 
 //Components
-import Navbar from './components/Navbar'
+import Navbar from './components/layout/Navbar'
 import AuthRoute from './util/AuthRoute';
 
 //pages
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import user from './pages/user';
+
 import axios from 'axios';
 
 const theme = createMuiTheme(themeFile);
+axios.defaults.baseURL= "https://us-central1-ranter-780b9.cloudfunctions.net/api";
 
 const token=localStorage.FBIdToken;
 if(token){
@@ -53,6 +56,8 @@ class App extends Component{
           <Route exact path="/" component= {home}/>
           <AuthRoute exact path="/login" component= {login} />
           <AuthRoute exact path="/signup" component= {signup} />
+          <Route exact path="/users/:handle" component={user} />
+          <Route exact path= "/users/:handle/problem/:problemId" component={user}/>
         </Switch>
         </div>
       </Router>

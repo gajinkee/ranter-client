@@ -1,6 +1,7 @@
 import {
     SET_USER,
     SET_ERRORS,
+    CLEAR_ERRORS,
     LOADING_UI,
     SET_UNAUTHENTICATED,
     LOADING_USER,
@@ -8,7 +9,6 @@ import {
   } from '../types';
 
 import axios from 'axios';
-import { clearErrors } from './dataActions';
 
 export const loginUser= (userData, history) => (dispatch) =>{
     dispatch({type: LOADING_UI});
@@ -18,7 +18,7 @@ export const loginUser= (userData, history) => (dispatch) =>{
     .then((res) =>{
         setAuthorizationHeader(res.data.token);
         dispatch(getUserData());
-        dispatch(clearErrors());
+        dispatch({ type: CLEAR_ERRORS });
         history.push('/');
     })
     .catch(err =>{
@@ -43,7 +43,7 @@ export const signupUser= (newUserData, history) => (dispatch) =>{
     .then(res =>{
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData());
-        dispatch(clearErrors());
+        dispatch({ type: CLEAR_ERRORS });
         history.push('/');
     })
     .catch(err =>{

@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
 
 //redux
@@ -15,6 +14,7 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 
 //Components
 import Navbar from './components/layout/Navbar'
+import themeObject from './util/theme';
 import AuthRoute from './util/AuthRoute';
 
 //pages
@@ -25,13 +25,13 @@ import user from './pages/user';
 
 import axios from 'axios';
 
-const theme = createMuiTheme(themeFile);
+const theme = createMuiTheme(themeObject);
+
 axios.defaults.baseURL= "https://us-central1-ranter-780b9.cloudfunctions.net/api";
 
 const token=localStorage.FBIdToken;
 if(token){
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
     store.dispatch(logoutUser())
     window.location.href = '/login';

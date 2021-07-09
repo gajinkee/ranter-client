@@ -30,10 +30,8 @@ class Navbar extends Component {
                   <MyButton tip="Home">
                   <HomeIcon/>
                 </MyButton>
-              </Link>
-              <MyButton tip="Notifications">   
+              </Link>             
                   <Notifications/>
-                </MyButton>
                 </Fragment>
                  ) : (
                 <Fragment>
